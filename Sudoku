@@ -28,5 +28,7 @@ public class Sudoku {
         
     }
     
-    public void solve()
+    public void solve() {
+    
+    }
 }
