@@ -23,11 +23,6 @@ public class Sudoku {
         
     }
     
-    /** method to figure out who the candidates are on the selected cell
-      * 
-      * @param the row and column of the selected cell
-      * @return boolean array with the corresponding indexes of numbers 1-9. True if it is a candidate
-      */
     public boolean[] candidates(int row, int column) {
         boolean[] canArray = new boolean[9];
         for (int i = 0; i < 9; i++)
