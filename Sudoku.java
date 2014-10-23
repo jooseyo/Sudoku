@@ -12,6 +12,19 @@ public class Sudoku {
         
     }
     
+    /** 
+     * constructor that creates a Sudoku with an initial board that is a copy of board
+     */
+    public Sudoku(int[][] board) {
+        
+    }
+    
+    /**
+     * method to verify whether it is int or not
+     * 
+     * @param s the input
+     * @return true if it is int else false
+     */
     public boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
@@ -19,13 +32,6 @@ public class Sudoku {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-    
-    /** 
-     * constructor that creates a Sudoku with an initial board that is a copy of board
-     */
-    public Sudoku(int[][] board) {
-        
     }
     
     /** 
