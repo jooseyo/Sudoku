@@ -1,33 +1,35 @@
 public class Sudoku {
     
-    int[][] board;
+    int[][] board; // 2x2 arrays for the sudoku board
     // add other instance variables
     
-    /** default constructor. creates a Sudoku with an initially empty board
+    /** 
+     * default constructor. creates a Sudoku with an initially empty board
      */ 
     public Sudoku() {
         
     }
     
-    /** constructor that creates a Sudoku with an initial board that is a copy of board
+    /** 
+     * constructor that creates a Sudoku with an initial board that is a copy of board
      */
     public Sudoku(int[][] board) {
         
     }
     
-    /** method that returns a copy of the current state of the board
-      * 
-      * 
-      */
+    /** 
+     * method that returns a copy of the current state of the board
+     */
     public int[][] board() {
         
     }
     
-    /** method to figure out who the candidates are on the selected cell
-      * 
-      * @param the row and column of the selected cell
-      * @return boolean array with the corresponding indexes of numbers 1-9. True if it is a candidate
-      */
+    /** 
+     * method to figure out who the candidates are on the selected cell
+     * 
+     * @param the row and column of the selected cell
+     * @return boolean array with the corresponding indexes of numbers 1-9. True if it is a candidate
+     */
     public boolean[] candidates(int row, int column) {
         boolean[] canArray = new boolean[9];
         for (int i = 0; i < 9; i++)
@@ -58,11 +60,23 @@ public class Sudoku {
         
     }
     
+    /**
+     * method1 to figure out which box the selected cell belongs to
+     * 
+     * @param row: the row of the selected cell
+     * @return the row of the representative of the box that thetselected cell belongs to
+     */
     public int rowOfRepresentative (int row) {
         int rowRepresentative = ((row - 1) / 3) * 3;
         return rowRepresentative;
     }
     
+     /**
+      * method2 to figure out which box the selected cell belongs to
+      * 
+      * @param column: the column of the selected cell
+      * @return the column of the representative of the box that thetselected cell belongs to
+      */
     public int columnOfRepresentative (int column) {
         int columnRepresentative = ((column - 1) / 3) * 3;
         return columnRepresentative;
