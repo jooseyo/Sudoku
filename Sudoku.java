@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Sudoku {
     
     int[][] board; // 2x2 arrays for the sudoku board
@@ -8,6 +10,15 @@ public class Sudoku {
      */ 
     public Sudoku() {
         
+    }
+    
+    public boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
     
     /** 
@@ -57,7 +68,6 @@ public class Sudoku {
             }
         }
         return canArray;
-        
     }
     
     /**
@@ -82,8 +92,20 @@ public class Sudoku {
         return columnRepresentative;
     }
     
+    /**
+     * method to check the state of board
+     * 
+     * @return true if board is solved
+     *  otherwise false
+     */
     public boolean isSolved() {
-        return false;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 0)
+                    return false;
+            }
+        }
+        return true;
     }
     
     public void solve() {
@@ -91,7 +113,25 @@ public class Sudoku {
     }
     
     public boolean nakedSingles() {
-        return true;
+        boolean result = false;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                boolean[] candidates = candidates(i, j);
+                int count = 0;
+                int index = -1;
+                for (int k = 0; k < candidates.length; k++) {
+                    if (candidates[k]) {
+                        count++;
+                        index = k;
+                    }
+                }
+                if (count == 1) {
+                    board[i][j] = index + 1;
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
     
     public boolean hiddenSingles() {
