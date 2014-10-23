@@ -35,7 +35,7 @@ public class Sudoku {
         
         for (int i = 0; i < 9; i++) {
             int numberInCell = board[row - 1][i];
-            if (numberInCell != 0) {
+            if (numberInCell != 0)
                 canArray[numberInCell - 1] = false; // is -1 correct or not
         }
         
