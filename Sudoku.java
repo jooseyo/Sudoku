@@ -127,6 +127,13 @@ public class Sudoku {
 			;
 	}
 
+	/**
+	 * This method checks every cell on the field to determine if there are cells that can only have one possible value
+	 * and assigns them that value.
+	 * 
+	 * @return true if the board has changed
+	 * 	       false otherwise
+	 */
 	public boolean nakedSingles() {
 		boolean result = false;
 		for (int i = 0; i < board.length; i++) {
@@ -151,6 +158,14 @@ public class Sudoku {
 		return result;
 	}
 
+	/**
+	 * This method checks every cell to determine whether or not it is a hidden single by invoking the helper method.
+	 * If the cell is not a hidden single, its value does not change. 
+	 * However, if it is a hidden single, the value that makes it one will be assigned to the cell.
+	 * 
+	 * @return true if the board has changed
+	 *         false otherwise
+	 */
 	public boolean hiddenSingles() {
 		boolean changed = false;
 		for (int i = 0; i < board.length; i++) {
@@ -169,48 +184,63 @@ public class Sudoku {
 		return changed;
 	}
 
+	/**
+	 * This is the helper method for hiddenSingles(), which checks if each individual cell is a hidden single or not.
+	 * This method compares the candidates of the cells in the same row, column, and box using XORs and AND logic.
+	 * 
+	 * @param row the row number of the possible hidden single
+	 * @param column the column number of the possible hidden single
+	 * 
+	 * @return the integer value that would be assigned to the hidden single or 0 if the cell is nota hidden single
+	 */
 	public int hiddenSinglesHelper(int row, int column) {
 		boolean[] candidates = candidates(row, column);
-		boolean[] check = candidates(row, column);
+		boolean[] check = candidates(row, column); 							// creates an array to check values to eliminate other possibilities
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] != 0)
 					continue;
 				if (row == i && column == j)
 					continue;
-				if (row == i) {
+				if (row == i) {												// checks the empty cells in the same row as the candidate cell
+					if (board[i][j] != 0)
+						continue;
 					boolean[] trues = new boolean[9];
-					boolean[] candidatesOfCell = candidates(i, j);
+					boolean[] candidatesOfCell = candidates(i, j);			// obtains the boolean array of candidates for the specific cell
 					for (int k = 0; k < candidatesOfCell.length; k++) {
-						trues[k] = candidates[k] ^ candidatesOfCell[k];
+						trues[k] = candidates[k] ^ candidatesOfCell[k];		// XORs the candidates of specific cell and candidate cell to find differences
 					}
 					for (int l = 0; l < check.length; l++) {
-						check[l] = check[l] && trues[l];
+						check[l] = check[l] && trues[l];					// ANDs the differences with the possible remaining hidden single values
 					}
 					continue;
 				}
-				if (column == j) {
+				if (column == j) {											// checks the empty cells in the same column as the candidate cell
+					if (board[i][j] != 0)
+						continue;
 					boolean[] trues = new boolean[9];
-					boolean[] candidatesOfCell = candidates(i, j);
+					boolean[] candidatesOfCell = candidates(i, j);			// obtains the boolean array of candidates for the specific cell
 					for (int k = 0; k < candidatesOfCell.length; k++) {
-						trues[k] = candidates[k] ^ candidatesOfCell[k];
+						trues[k] = candidates[k] ^ candidatesOfCell[k];		// XORs the candidates of specific cell and candidate cell to find differences
 					}
 					for (int l = 0; l < check.length; l++) {
-						check[l] = check[l] && trues[l];
+						check[l] = check[l] && trues[l];					// ANDs the differences with the possible remaining hidden single values
 					}
 					continue;
 				}
-				int rRow = rowOfRepresentative(row);
-				int rColumn = columnOfRepresentative(column);
-				for (int m = rRow; m < rRow + 3; m++) {
+				int rRow = rowOfRepresentative(row);						// Finds the row of the representative cell
+				int rColumn = columnOfRepresentative(column);				// Finds the column of the representative cell
+				for (int m = rRow; m < rRow + 3; m++) {						// Iterating for loop for the box cells
 					for (int n = rColumn; n < rColumn + 3; n++) {
+						if (board[m][n] != 0)
+							continue;
 						boolean[] trues = new boolean[9];
-						boolean[] candidatesOfCell = candidates(m, n);
+						boolean[] candidatesOfCell = candidates(m, n);		// obtains the boolean array of candidates for the specific cell in the box
 						for (int k = 0; k < candidatesOfCell.length; k++) {
-							trues[k] = candidates[k] ^ candidatesOfCell[k];
+							trues[k] = candidates[k] ^ candidatesOfCell[k];	// XORs the candidates of specific cell and candidate cell to find differences
 						}
 						for (int l = 0; l < check.length; l++) {
-							check[l] = check[l] && trues[l];
+							check[l] = check[l] && trues[l];				// ANDs the differences with the possible remaning hidden single values
 						}
 						continue;
 					}
@@ -219,13 +249,13 @@ public class Sudoku {
 		}
 		count = 0;
 		position = -1;
-		for (int i = 0; i < check.length; i++) {
+		for (int i = 0; i < check.length; i++) {							// Loops through check to find remaining possible hidden single values
 			if (check[i]) {
 				count++;
 				position = i;
 			}
 		}
-		if (count == 1)
+		if (count == 1)														// Returns the number for the cell if there is only one left in check
 			return position + 1;
 		else
 			return 0;
