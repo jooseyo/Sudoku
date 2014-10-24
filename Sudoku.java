@@ -10,7 +10,7 @@ public class Sudoku {
 	 * default constructor. creates a Sudoku with an initially empty board
 	 */
 	public Sudoku() {
-
+		board = new int[9][9];
 	}
 
 	/**
@@ -19,6 +19,7 @@ public class Sudoku {
 	 */
 	public Sudoku(int[][] board) {
 
+		this.board = board;
 	}
 
 	/**
@@ -41,7 +42,7 @@ public class Sudoku {
 	 * method that returns a copy of the current state of the board
 	 */
 	public int[][] board() {
-		//
+		
 	}
 
 	/**
