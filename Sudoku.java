@@ -19,7 +19,44 @@ public class Sudoku {
 	 */
 	public Sudoku(int[][] board) {
 
-		this.board = board;
+	//	this.board = board;
+		this.board = new int[board.length][board[0].length];
+		for (int i = 0; i < board.length; i++) {	
+			for (int j = 0; j < board[i].length; i++) {
+				this.board[i][j] = board[i][j];
+			}
+		}
+	}
+
+	private int[][] transformString (String s)
+	{
+		int[][] numArray = new int[9][9];
+		for (int i = 0; i < numArray.length; i++)
+		{
+			for (int j = 0; j < numArray[i].length; j++)
+			{
+				int position = (i * numArray.length) + j;
+				numArray[i] = Integer.parseInt(s.substring(position, position + 1));
+			}
+		}
+		return numArray;
+	}
+
+	/**
+	 * Main method for Sudoku
+	 */
+	public static void main (String[] args)
+	{
+		System.out.println("Welcome to Sudoku.");
+		System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
+		String stringNums = "";
+		Scanner s = new Scanner (System.in);
+		if (s.hasNextString())
+		{
+			stringNums = s.nextString();
+		}
+		Sudoku sudoku = new Sudoku(transformString(s));
+		sudoku.solve();
 	}
 
 	/**
@@ -42,7 +79,8 @@ public class Sudoku {
 	 * method that returns a copy of the current state of the board
 	 */
 	public int[][] board() {
-		
+		int[][] boardCopy = board;
+		return boardCopy;
 	}
 
 	/**
