@@ -18,28 +18,14 @@ public class Sudoku {
 	 * board
 	 */
 	public Sudoku(int[][] board) {
-
+		this();
 	//	this.board = board;
-		this.board = new int[board.length][board[0].length];
+	//	this.board = new int[board.length][board[0].length];
 		for (int i = 0; i < board.length; i++) {	
 			for (int j = 0; j < board[i].length; i++) {
 				this.board[i][j] = board[i][j];
 			}
 		}
-	}
-
-	private int[][] transformString (String s)
-	{
-		int[][] numArray = new int[9][9];
-		for (int i = 0; i < numArray.length; i++)
-		{
-			for (int j = 0; j < numArray[i].length; j++)
-			{
-				int position = (i * numArray.length) + j;
-				numArray[i] = Integer.parseInt(s.substring(position, position + 1));
-			}
-		}
-		return numArray;
 	}
 
 	/**
@@ -49,13 +35,22 @@ public class Sudoku {
 	{
 		System.out.println("Welcome to Sudoku.");
 		System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
-		String stringNums = "";
-		Scanner s = new Scanner (System.in);
-		if (s.hasNextString())
+		String stringNums = ""; //whatever the numbers are (81)
+		// Scanner s = new Scanner (System.in);
+		// if (s.hasNextString())
+		// {
+		// 	stringNums = s.nextString();
+		// }
+		int[][] numArray = new int[9][9];
+		for (int i = 0; i < numArray.length; i++)
 		{
-			stringNums = s.nextString();
+			for (int j = 0; j < numArray[i].length; j++)
+			{
+				int position = (i * numArray.length) + j;
+				numArray[i][j] = Integer.parseInt(stringNums.charAt(position);
+			}
 		}
-		Sudoku sudoku = new Sudoku(transformString(s));
+		Sudoku sudoku = new Sudoku(numArray);
 		sudoku.solve();
 	}
 
@@ -79,7 +74,7 @@ public class Sudoku {
 	 * method that returns a copy of the current state of the board
 	 */
 	public int[][] board() {
-		int[][] boardCopy = board;
+		int[][] boardCopy = Arrays.copyOf(board, board.length);
 		return boardCopy;
 	}
 
@@ -92,20 +87,21 @@ public class Sudoku {
 	 *         if it is a candidate
 	 */
 	public boolean[] candidates(int row, int column) {
-		boolean[] canArray = new boolean[9];
-		for (int i = 0; i < 9; i++)
-			canArray[i] = !canArray[i];
+		boolean[] canArray = new boolean[10];
+		canArray[0] = false;
+		for (int i = 1; i < 10; i++)
+			canArray[i] = true;
 
 		for (int i = 0; i < 9; i++) {
-			int numberInCell = board[row - 1][i];
+			int numberInCell = board[row][i];
 			if (numberInCell != 0)
-				canArray[numberInCell - 1] = false; // is -1 correct or not
+				canArray[numberInCell] = false;
 		}
 
 		for (int j = 0; j < 9; j++) {
-			int numberInCell = board[j][column - 1];
+			int numberInCell = board[j][column];
 			if (numberInCell != 0)
-				canArray[numberInCell - 1] = false;
+				canArray[numberInCell] = false;
 		}
 
 		int rRow = rowOfRepresentative(row);
@@ -114,7 +110,7 @@ public class Sudoku {
 			for (int j = rColumn; j < rColumn + 3; j++) {
 				int numberInCell = board[i][j];
 				if (numberInCell != 0)
-					canArray[numberInCell - 1] = false;
+					canArray[numberInCell] = false;
 			}
 		}
 		return canArray;
@@ -129,7 +125,7 @@ public class Sudoku {
 	 *         belongs to
 	 */
 	public int rowOfRepresentative(int row) {
-		int rowRepresentative = ((row - 1) / 3) * 3;
+		int rowRepresentative = (row / 3) * 3;
 		return rowRepresentative;
 	}
 
@@ -142,7 +138,7 @@ public class Sudoku {
 	 *         cell belongs to
 	 */
 	public int columnOfRepresentative(int column) {
-		int columnRepresentative = ((column - 1) / 3) * 3;
+		int columnRepresentative = (column / 3) * 3;
 		return columnRepresentative;
 	}
 
