@@ -1,4 +1,6 @@
 import junit.framework.TestCase;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 /**
  * A JUnit test case class.
@@ -21,6 +23,8 @@ public class SudokuTests extends TestCase {
     String testNums5 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     String testNums6 = "100000000000001000000000000000000010000000000000000000000000000000000000000000001";
     
+    ByteArrayOutputStream outContent;
+
     protected void setUp() throws Exception {
         int[][] testArray1 = new int[9][9];
         for (int i = 0; i < testArray1.length; i++) {
@@ -76,6 +80,8 @@ public class SudokuTests extends TestCase {
         }
         s6 = new Sudoku(testArray6);
 
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
     }
     
     /**
@@ -139,5 +145,17 @@ public class SudokuTests extends TestCase {
         assertEquals(s6.hiddenSinglesHelp(2, 6), 1);
     }
 
-
+    public void testSolve() {
+        s1.solve();
+        assertTrue(outContent.toString().matches(
+                  " 4 8 2 1 9 3 7 6 5\\r?\\n" +
+                  " 5 1 9 8 6 7 3 4 2\\r?\\n" +
+                  " 7 3 6 2 4 5 8 1 9\\r?\\n" +
+                  " 8 2 3 4 5 9 6 7 1\\r?\\n" +
+                  " 9 4 5 7 1 6 2 3 8\\r?\\n" +
+                  " 1 6 7 3 2 8 5 9 4\\r?\\n" +
+                  " 3 7 1 9 8 2 4 5 6\\r?\\n" +
+                  " 2 5 4 6 7 1 9 8 3\\r?\\n" +
+                  " 6 9 8 5 3 4 1 2 7\\r?\\n"));
+    }
 }

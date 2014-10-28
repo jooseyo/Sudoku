@@ -36,7 +36,7 @@ public class Sudoku {
         System.out.println("Welcome to Sudoku.");
         System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
         // 028007000016083070000020851137290000000730000000046307290070000000860140000300700
-        String stringNums = "100000000000001000000000000000000010000000000000000000000000000000000000000000001";
+        String stringNums = "002193000000007000700040019803000600045000230007000504370080006000600000000534100";
         int[][] numArray = new int[9][9];
         for (int i = 0; i < numArray.length; i++) {
             for (int j = 0; j < numArray[i].length; j++) {
@@ -46,13 +46,7 @@ public class Sudoku {
         }
         Sudoku sudoku = new Sudoku(numArray);
         sudoku.solve();
-        int[][] thisBoard = sudoku.board();
-        for (int i = 0; i < thisBoard.length; i++) {
-            for (int j = 0; j < thisBoard[i].length; j++) {
-                System.out.printf("% 2d", thisBoard[i][j]);
-            }
-            System.out.println();
-        }
+        
     }
     
     /**
@@ -160,6 +154,13 @@ public class Sudoku {
     
     public void solve() {
         while (!isSolved() && (nakedSingles() || hiddenSingles()));
+        int[][] thisBoard = board();
+        for (int i = 0; i < thisBoard.length; i++) {
+            for (int j = 0; j < thisBoard[i].length; j++) {
+                System.out.printf("% 2d", thisBoard[i][j]);
+            }
+            System.out.println();
+        }
     }
     
     /**
@@ -190,7 +191,7 @@ public class Sudoku {
                 }
             }
         }
-        System.out.println("Naked singles: " + result);
+        
         return result;
     }
     
