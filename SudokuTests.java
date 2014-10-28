@@ -74,7 +74,7 @@ public class SudokuTests extends TestCase {
                 testArray6[i][j] = Integer.parseInt("" + testNums6.charAt(position));
             }
         }
-        s6 = new Sudoku(testArray5);
+        s6 = new Sudoku(testArray6);
 
     }
     
@@ -136,6 +136,8 @@ public class SudokuTests extends TestCase {
         assertEquals(s1.hiddenSinglesHelp(5, 3), 3);
         assertEquals(s2.hiddenSinglesHelp(2, 3), 6);
         assertEquals(s1.hiddenSinglesHelp(0, 0), -1);
-//        assertEquals(s6.hiddenSinglesHelp(2, 6), 1);
+        assertEquals(s6.hiddenSinglesHelp(2, 6), 1);
     }
+
+
 }
