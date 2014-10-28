@@ -1,0 +1,41 @@
+import junit.framework.TestCase;
+
+/**
+ * A JUnit test case class.
+ * Every method starting with the word "test" will be called when running
+ * the test with JUnit.
+ */
+public class SudokuTests extends TestCase {
+    Sudoku s1;
+    Sudoku s2;
+    String testNums1 = "002193000000007000700040019803000600045000230007000504370080006000600000000534100";
+    String testNums2 = "028007000016083070000020851137290000000730000000046307290070000000860140000300700";
+    
+    protected void setUp() throws Exception {
+    	int[][] testArray1 = new int[9][9];
+    	for (int i = 0; i < testArray1.length; i++) {
+            for (int j = 0; j < testArray1[i].length; j++) {
+                int position = (i * testArray1.length) + j;
+                testArray1[i][j] = Integer.parseInt("" + testNums1.charAt(position));
+            }
+        }
+    	s1 = new Sudoku(testArray1);
+
+    }
+
+    /**
+     * A test method.
+     * (Replace "X" with a name describing the test.  You may write as
+     * many "testSomething" methods in this class as you wish, and each
+     * one will be called when running JUnit over this class.)
+     */
+
+    public void testBoard() {
+        for (int i = 0; i < s1.board.length; i++) {
+        	for (int j = 0; j < s1.board.test[i],length; j++) {
+        		assertEquals(testNums1.board[i][j], testNums1.board().[i][j]);
+        	}
+        }
+    }
+    
+}
