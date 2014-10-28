@@ -35,7 +35,7 @@ public class Sudoku {
     public static void main (String[] args) {
         System.out.println("Welcome to Sudoku.");
         System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
-        String stringNums = "000041000060000200000000000320600000000050040700000000000200300480000000501000000";
+        String stringNums = "028007000016083070000020851137290000000730000000046307290070000000860140000300700";
         int[][] numArray = new int[9][9];
         for (int i = 0; i < numArray.length; i++) {
             for (int j = 0; j < numArray[i].length; j++) {
@@ -61,14 +61,14 @@ public class Sudoku {
      *            the input
      * @return true if it is int else false
      */
-    public boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+    //public boolean isInteger(String s) {
+    //    try {
+    //        Integer.parseInt(s);
+    //       return true;
+    //    } catch (NumberFormatException e) {
+    //        return false;
+    //    }
+    //}
     
     /**
      * method that returns a copy of the current state of the board
@@ -173,7 +173,7 @@ public class Sudoku {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] != 0)
-                    break;
+                    continue;
                 boolean[] candidates = candidates(i, j);
                 int count = 0;
                 int index = -1;
@@ -184,7 +184,7 @@ public class Sudoku {
                     }
                 }
                 if (count == 1) {
-                    board[i][j] = index + 1;
+                    board[i][j] = index;
                     result = true;
                 }
             }
@@ -208,8 +208,8 @@ public class Sudoku {
                 if (board[i][j] != 0)
                     continue;
                 else {
-                    int number = hiddenSinglesHelper(i, j);
-                    if (number != 0) {
+                    int number = hiddenSinglesHelp(i, j);
+                    if (number != -1) {
                         board[i][j] = number;
                         changed = true;
                     }
@@ -228,71 +228,58 @@ public class Sudoku {
      * 
      * @return the integer value that would be assigned to the hidden single or 0 if the cell is nota hidden single
      */
-    public int hiddenSinglesHelper(int row, int column) {
-        boolean[] candidates = candidates(row, column);
-        boolean[] check = candidates(row, column);        // creates an array to check values to eliminate other possibilities
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+    public int hiddenSinglesHelp(int row, int column) {
+        boolean[]  candidatesOfTheSelectedCell = candidates(row, column); // store the candidates of the selected cell
+        
+        for (int j = 0; j < board.length; j++) { // go throught the same row
+            if (board[row][j] != 0)
+                continue;
+            boolean[] compare = candidates(row, j); // store the cell's candidates on the same row to compare
+            for (int i = 1; i < compare.length; i++) { // to compare the candiates in selected and comparing cell
+                if (candidatesOfTheSelectedCell[i]) {    // if it is candidate for selected cell, because we only need to compare the candidates
+                    candidatesOfTheSelectedCell[i] = candidatesOfTheSelectedCell[i] ^ compare[i]; // compare and true if only candidates in selected is true;
+                }
+            }
+        }
+
+        for (int i = 0; i < board.length; i++) { // go throught the same column
+            if (board[i][column] != 0)
+                continue;
+            boolean[] compare = candidates(i, column); // store the cell's candidates on the same row to compare
+            for (int j = 1; j < compare.length; j++) { // to compare the candiates in selected and comparing cell
+                if (candidatesOfTheSelectedCell[j]) {    // if it is candidate for selected cell, because we only need to compare the candidates
+                    candidatesOfTheSelectedCell[j] = candidatesOfTheSelectedCell[j] ^ compare[j]; // compare and true if only candidates in selected is true;
+                }
+            }
+        }
+
+        int rRow = rowOfRepresentative(row);      // Finds the row of the representative cell
+        int rColumn = columnOfRepresentative(column);
+        for (int i = rRow; i < rRow + 3; i++) {
+            for (int j = rColumn; j < rColumn + 3; j++) {
                 if (board[i][j] != 0)
                     continue;
-                if (row == i && column == j)
-                    continue;
-                if (row == i) {            // checks the empty cells in the same row as the candidate cell
-                    if (board[i][j] != 0)
-                        continue;
-                    boolean[] trues = new boolean[10];
-                    boolean[] candidatesOfCell = candidates(i, j);   // obtains the boolean array of candidates for the specific cell
-                    for (int k = 1; k < candidatesOfCell.length; k++) {
-                        trues[k] = candidates[k] ^ candidatesOfCell[k];  // XORs the candidates of specific cell and candidate cell to find differences
-                    }
-                    for (int l = 1; l < check.length; l++) {
-                        check[l] = check[l] && trues[l];     // ANDs the differences with the possible remaining hidden single values
-                    }
-                    continue;
-                }
-                if (column == j) {           // checks the empty cells in the same column as the candidate cell
-                    if (board[i][j] != 0)
-                        continue;
-                    boolean[] trues = new boolean[10];
-                    boolean[] candidatesOfCell = candidates(i, j);   // obtains the boolean array of candidates for the specific cell
-                    for (int k = 1; k < candidatesOfCell.length; k++) {
-                        trues[k] = candidates[k] ^ candidatesOfCell[k];  // XORs the candidates of specific cell and candidate cell to find differences
-                    }
-                    for (int l = 1; l < check.length; l++) {
-                        check[l] = check[l] && trues[l];     // ANDs the differences with the possible remaining hidden single values
-                    }
-                    continue;
-                }
-                int rRow = rowOfRepresentative(row);      // Finds the row of the representative cell
-                int rColumn = columnOfRepresentative(column);    // Finds the column of the representative cell
-                for (int m = rRow; m < rRow + 3; m++) {      // Iterating for loop for the box cells
-                    for (int n = rColumn; n < rColumn + 3; n++) {
-                        if (board[m][n] != 0)
-                            continue;
-                        boolean[] trues = new boolean[10];
-                        boolean[] candidatesOfCell = candidates(m, n);  // obtains the boolean array of candidates for the specific cell in the box
-                        for (int k = 1; k < candidatesOfCell.length; k++) {
-                            trues[k] = candidates[k] ^ candidatesOfCell[k]; // XORs the candidates of specific cell and candidate cell to find differences
-                        }
-                        for (int l = 1; l < check.length; l++) {
-                            check[l] = check[l] && trues[l];    // ANDs the differences with the possible remaning hidden single values
-                        }
-                        continue;
+                boolean[] compare = candidates(i, j);
+                for (int k = 1; k < compare.length; k++) { // to compare the candiates in selected and comparing cell
+                    if (candidatesOfTheSelectedCell[k]) {    // if it is candidate for selected cell, because we only need to compare the candidates
+                        candidatesOfTheSelectedCell[k] = candidatesOfTheSelectedCell[k] ^ compare[k]; // compare and true if only candidates in selected is true;
                     }
                 }
             }
         }
+
         int count = 0;
-        int position = -1;
-        for (int i = 1; i < check.length; i++) {       // Loops through check to find remaining possible hidden single values
-            if (check[i]) {
+        int index = -1;
+        for (int i = 1; i < candidatesOfTheSelectedCell.length; i++) {
+            if (candidatesOfTheSelectedCell[i]) {
                 count++;
-                position = i;
+                index = i;
             }
         }
-        if (count == 1)              // Returns the number for the cell if there is only one left in check
-            return position + 1;
+        if (count == 1)
+            return index;
         else
-            return 0;
+            return -1;
+    
     }
 }
