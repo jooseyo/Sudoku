@@ -35,7 +35,8 @@ public class Sudoku {
     public static void main(String[] args) {
         System.out.println("Welcome to Sudoku.");
         System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
-        String stringNums = "028007000016083070000020851137290000000730000000046307290070000000860140000300700";
+        // 028007000016083070000020851137290000000730000000046307290070000000860140000300700
+        String stringNums = "002193000000007000700040019803000600045000230007000504370080006000600000000534100";
         int[][] numArray = new int[9][9];
         for (int i = 0; i < numArray.length; i++) {
             for (int j = 0; j < numArray[i].length; j++) {
@@ -45,13 +46,7 @@ public class Sudoku {
         }
         Sudoku sudoku = new Sudoku(numArray);
         sudoku.solve();
-        int[][] thisBoard = sudoku.board();
-        for (int i = 0; i < thisBoard.length; i++) {
-            for (int j = 0; j < thisBoard[i].length; j++) {
-                System.out.printf("% 2d", thisBoard[i][j]);
-            }
-            System.out.println();
-        }
+        
     }
     
     /**
@@ -159,6 +154,13 @@ public class Sudoku {
     
     public void solve() {
         while (!isSolved() && (nakedSingles() || hiddenSingles()));
+        int[][] thisBoard = board();
+        for (int i = 0; i < thisBoard.length; i++) {
+            for (int j = 0; j < thisBoard[i].length; j++) {
+                System.out.printf("% 2d", thisBoard[i][j]);
+            }
+            System.out.println();
+        }
     }
     
     /**
@@ -189,7 +191,7 @@ public class Sudoku {
                 }
             }
         }
-        System.out.println("Naked singles: " + result);
+        
         return result;
     }
     
@@ -240,7 +242,7 @@ public class Sudoku {
                 continue;
             else {
                 boolean[] compare = candidates(row, j); // store the comparing cell's candidates
-                System.out.println(Arrays.toString(compare));                
+                //System.out.println(Arrays.toString(compare));                
                 for (int i = 1; i < compare.length; i++) { // iterate arrays of candidates to compare
                     if (candidatesOfTheSelectedCell[i])    // if it is a true candidate for selected cell, because we only need to compare the true candidates
                         candidatesOfTheSelectedCell[i] ^= compare[i]; // compare and true if only candidates in selected is true;
@@ -259,7 +261,7 @@ public class Sudoku {
                 index = i;  // store the true's index to index variable
             }
         }
-        System.out.println(count);
+        
         if (count == 1) // if there is only one true;
             return index; // return the hidden single
 
@@ -281,15 +283,15 @@ public class Sudoku {
         }
 
         // count the number of trues in the array of candidatesOfTheSelectedCell
-        int count = 0;  // variable to count the trues
-        int index = -1; // the index of the hiddensingle
+        count = 0;  // variable to count the trues
+        index = -1; // the index of the hiddensingle
         for (int i = 1; i < candidatesOfTheSelectedCell.length; i++) {  // iterate through the candidatesOfTheSelectedCell
             if (candidatesOfTheSelectedCell[i]) {   // if it is true
                 count++;    // increment 1
                 index = i;  // store the true's index to index variable
             }
         }
-        System.out.println(count);
+        
         if (count == 1) // if there is only one true;
             return index; // return the hidden single
 
@@ -314,15 +316,15 @@ public class Sudoku {
         }
 
         // count the number of trues in the array of candidatesOfTheSelectedCell
-        int count = 0;  // variable to count the trues
-        int index = -1; // the index of the hiddensingle
+        count = 0;  // variable to count the trues
+        index = -1; // the index of the hiddensingle
         for (int i = 1; i < candidatesOfTheSelectedCell.length; i++) {  // iterate through the candidatesOfTheSelectedCell
             if (candidatesOfTheSelectedCell[i]) {   // if it is true
                 count++;    // increment 1
                 index = i;  // store the true's index to index variable
             }
         }
-        System.out.println(count);
+        
         if (count == 1) // if there is only one true;
             return index; // return the hidden single
         else

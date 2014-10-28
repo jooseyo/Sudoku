@@ -33,8 +33,8 @@ public class Sudoku {
      * Main method for Sudoku
      */
     public static void main(String[] args) {
-        System.out.println("Welcome to Sudoku.");
-        System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
+        //System.out.println("Welcome to Sudoku.");
+        //System.out.println("To begin, please insert a string (numbers) of the sudoku board.");
         // 028007000016083070000020851137290000000730000000046307290070000000860140000300700
         String stringNums = "002193000000007000700040019803000600045000230007000504370080006000600000000534100";
         int[][] numArray = new int[9][9];
